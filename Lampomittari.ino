@@ -25,4 +25,16 @@ void loop(){
         Serial.println(temperature);
         delay (1000);
         lcd.clear();
+   if(temperature >23) {
+        lcd.setCursor(0,0);
+        lcd.print("Liian l\xe1mmin");
+        delay (1000);
+        lcd.clear();
+   }else if(temperature <20){
+        lcd.setCursor(0,0);
+        lcd.print("Liian viile\xe1");
+        delay (1000);
+        lcd.clear();
+   }
+  }
 }
