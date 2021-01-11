@@ -17,4 +17,12 @@ void loop(){
     int reading = analogRead(A0);
       float voltage = reading * (5000 / 1024.0);
       float temperature = (voltage - 500) / 10;
+      lcd.setCursor(0,0);
+        lcd.print("Sopiva ilma");
+        lcd.setCursor(0,1);
+        lcd.print(temperature);
+        lcd.print("\337C");
+        Serial.println(temperature);
+        delay (1000);
+        lcd.clear();
 }
