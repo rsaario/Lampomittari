@@ -26,14 +26,14 @@ void showTemp(){
         lcd.setCursor(0,0);
         lcd.print("Liian l\xe1mmin");
         lcd.setCursor(0,1);
-        lcd.print(smoothedTempAvg);
+        lcd.print(smoothedTempAvg,1);
         lcd.print("\337C");
         Serial.println(smoothedTempAvg);
    }else if(temperature <20){
         lcd.setCursor(0,0);
         lcd.print("Liian viile\xe1");
         lcd.setCursor(0,1);
-        lcd.print(smoothedTempAvg);
+        lcd.print(smoothedTempAvg,1);
         lcd.print("\337C");
         Serial.println(smoothedTempAvg);        
    }else{
@@ -41,7 +41,7 @@ void showTemp(){
         lcd.setCursor(0,0);
         lcd.print("Sopiva ilma");
         lcd.setCursor(0,1);
-        lcd.print(smoothedTempAvg);
+        lcd.print(smoothedTempAvg,1);
         lcd.print("\337C");
         Serial.println(smoothedTempAvg);
    }
