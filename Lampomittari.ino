@@ -45,11 +45,10 @@ void showTemp(){
         lcd.print("\337C");
         Serial.println(smoothedTempAvg);
    }
-   tempAveg.clear();
 }
 
 void loop(){
   if(T3.timeIsUp()){
-   showTemp(); 
+   showTemp();
   }
 }
