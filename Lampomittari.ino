@@ -7,6 +7,7 @@ ajastin T3(1000);
 LiquidCrystal lcd = LiquidCrystal(2, 3, 4, 5, 6, 7);
 
 Smoothed <float> tempAveg;
+float smoothedTempAvg;
 
 void setup()
 {
@@ -16,20 +17,24 @@ Serial.println("Temp Display");
 tempAveg.begin(SMOOTHED_AVERAGE, 100);
 }
 
-void showTemp(){
+void getTemp(){
   int reading = analogRead(A0);
       float voltage = reading * (5000 / 1024.0);
       float temperature = (voltage - 500) / 10;
       tempAveg.add(temperature);
-      float smoothedTempAvg = tempAveg.get();     
-   if(temperature >24) {
+      smoothedTempAvg = tempAveg.get();
+      Serial.println(smoothedTempAvg);     
+}   
+
+void writeLcd(){   
+   if(smoothedTempAvg >24) {
         lcd.setCursor(0,0);
         lcd.print("Liian l\xe1mmin");
         lcd.setCursor(0,1);
         lcd.print(smoothedTempAvg,1);
         lcd.print("\337C");
         Serial.println(smoothedTempAvg);
-   }else if(temperature <20){
+   }else if(smoothedTempAvg <20){
         lcd.setCursor(0,0);
         lcd.print("Liian viile\xe1");
         lcd.setCursor(0,1);
@@ -48,7 +53,8 @@ void showTemp(){
 }
 
 void loop(){
+  getTemp();
   if(T3.timeIsUp()){
-   showTemp();
+   writeLcd();
   }
 }
