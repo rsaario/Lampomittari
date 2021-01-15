@@ -37,8 +37,6 @@ void writeLcd(){
    }else if(smoothedTempAvg <20){
         lcd.setCursor(0,0);
         lcd.print("Liian viile\xe1");
-        lcd.setCursor(11,0);
-        lcd.noCursor();
         lcd.setCursor(0,1);
         lcd.print(smoothedTempAvg,1);
         lcd.print("\337C");
