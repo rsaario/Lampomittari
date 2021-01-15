@@ -2,12 +2,13 @@
 #include <Smoothed.h>
 #include "ajastin.h"
 
-ajastin T3(1000); 
+ajastin T3(2000); 
 
 LiquidCrystal lcd = LiquidCrystal(2, 3, 4, 5, 6, 7);
 
 Smoothed <float> tempAveg;
 float smoothedTempAvg;
+float lastSmoothedTempAvg;
 
 void setup()
 {
@@ -22,8 +23,7 @@ void getTemp(){
       float voltage = reading * (5000 / 1024.0);
       float temperature = (voltage - 500) / 10;
       tempAveg.add(temperature);
-      smoothedTempAvg = tempAveg.get();
-      Serial.println(smoothedTempAvg);     
+      smoothedTempAvg = tempAveg.get();     
 }   
 
 void writeLcd(){   
@@ -52,9 +52,17 @@ void writeLcd(){
    }
 }
 
+void updateLcd(){
+  lastSmoothedTempAvg = tempAveg.getLast();
+  if(smoothedTempAvg > lastSmoothedTempAvg || smoothedTempAvg < lastSmoothedTempAvg){
+    writeLcd();
+  }
+}
+
 void loop(){
   getTemp();
   if(T3.timeIsUp()){
-   writeLcd();
-  }
+   updateLcd();
+   tempAveg.clear();
+  }  
 }
