@@ -2,7 +2,7 @@
 #include <Smoothed.h>
 #include "ajastin.h"
 
-ajastin T3(2000); 
+ajastin T3(1000); 
 
 LiquidCrystal lcd = LiquidCrystal(2, 3, 4, 5, 6, 7);
 
@@ -37,14 +37,15 @@ void writeLcd(){
    }else if(smoothedTempAvg <20){
         lcd.setCursor(0,0);
         lcd.print("Liian viile\xe1");
+        lcd.setCursor(11,0);
+        lcd.noCursor();
         lcd.setCursor(0,1);
         lcd.print(smoothedTempAvg,1);
         lcd.print("\337C");
         Serial.println(smoothedTempAvg);        
    }else{
-        lcd.clear();
         lcd.setCursor(0,0);
-        lcd.print("Sopiva ilma");
+        lcd.print("Sopiva ilma ");    
         lcd.setCursor(0,1);
         lcd.print(smoothedTempAvg,1);
         lcd.print("\337C");
