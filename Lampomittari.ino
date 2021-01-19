@@ -3,7 +3,7 @@
 #include "ajastin.h"
 
 //määrittää ajastimen nimen ja ajan
-ajastin T1(1000); 
+ajastin T1(1000);
 //määritetään lcd sana ohjaamaan näyttöä                                
 LiquidCrystal lcd = LiquidCrystal(2, 3, 4, 5, 6, 7);
                                 //RS,E,D4,D5,D6,D7
@@ -63,19 +63,20 @@ void writeLcd(){
 }
 
 void updateLcd(){
-  lastSmoothedTempAvg = tempAveg.getLast();
   /*vertaa aikaisempaa keskiarvoa uuteen keskiarvoon ja suorittaa sen 
   mukaan näytön kirjoitus funktion*/
-  if(smoothedTempAvg > lastSmoothedTempAvg || smoothedTempAvg < lastSmoothedTempAvg){
+  if(smoothedTempAvg != lastSmoothedTempAvg){
     writeLcd();
   }
 }
 
 void loop(){
+  lastSmoothedTempAvg = smoothedTempAvg;
   getTemp();
   //kun aika on täynnä suorittaa sisällytetyt funktiot
   if(T1.timeIsUp()){
    updateLcd();
-   tempAveg.clear();
+   Serial.print("vanha keskiarvo ");
+   Serial.println(lastSmoothedTempAvg);
   }  
 }
