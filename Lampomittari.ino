@@ -1,15 +1,15 @@
 #include <LiquidCrystal.h>
 #include <Smoothed.h>
 #include "ajastin.h"
+#include "tmp36.h"
 
 //määrittää ajastimen nimen ja ajan
 ajastin T1(1000);
+tmp36 sensorPin (A0);
 //määritetään lcd sana ohjaamaan näyttöä                                
 LiquidCrystal lcd = LiquidCrystal(2, 3, 4, 5, 6, 7);
                                 //RS,E,D4,D5,D6,D7
 //määriteään float datatyypeiksi                        
-Smoothed <float> tempAveg;
-float smoothedTempAvg;
 float lastSmoothedTempAvg;
 
 void setup()
@@ -18,21 +18,9 @@ Serial.begin(9600);
 //käynnistää näytön
 lcd.begin(16, 2);
 Serial.println("Temp Display");
-//aloitetaan ja määritetään keskiarvo laskennalle arvojen määrä
-tempAveg.begin(SMOOTHED_AVERAGE, 100);
 }
-//lämpötilan luku toiminto
-void getTemp(){
-  int reading = analogRead(A0);
-      float voltage = reading * (5000 / 1024.0);
-      float temperature = (voltage - 500) / 10;
-      //lisätään arvo keskiarvo laskentaan
-      tempAveg.add(temperature);
-      //haetaan keskiarvo
-      smoothedTempAvg = tempAveg.get();     
-}   
 //näytölle kirjoitus toiminto
-void writeLcd(){ 
+void writeLcd(float smoothedTempAvg){ 
   //tulostaa jos lämpötila ylittää 24 astetta  
    if(smoothedTempAvg >24) {
         lcd.setCursor(0,0);
@@ -62,20 +50,20 @@ void writeLcd(){
    }
 }
 
-void updateLcd(){
+void updateLcd(float smoothedTempAvg){
   /*vertaa aikaisempaa keskiarvoa uuteen keskiarvoon ja suorittaa sen 
   mukaan näytön kirjoitus funktion*/
   if(smoothedTempAvg != lastSmoothedTempAvg){
-    writeLcd();
+    writeLcd(smoothedTempAvg);
+    lastSmoothedTempAvg = smoothedTempAvg;
   }
 }
 
 void loop(){
-  lastSmoothedTempAvg = smoothedTempAvg;
-  getTemp();
+  float smoothedTempAvg = sensorPin.getTemp();
   //kun aika on täynnä suorittaa sisällytetyt funktiot
   if(T1.timeIsUp()){
-   updateLcd();
+   updateLcd(smoothedTempAvg);
    Serial.print("vanha keskiarvo ");
    Serial.println(lastSmoothedTempAvg);
   }  
